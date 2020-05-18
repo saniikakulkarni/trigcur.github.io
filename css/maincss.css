@@ -132,25 +132,31 @@ a:visited{
 	height:100%;
 }
 
+.subnav{
+	margin-left:8vw;
+}
+
 .subnav ul{
 	margin:20px;
-	width:65vw;
+	margin-bottom:0;
+	width:80vw;
 	display:flex;
 	flex-direction:row;
 	justify-content: space-between;
 	text-align: center;
 }
 .subnav ul li{
-	width:65vw;
+	width:80vw;
 	background:rgba(120,40,170,0.80);
 	list-style: none;
-	padding:1%;
-	border:5px solid #eaeceb;
-	border-radius:15px;
+	padding:1.5%;
+	border:10px solid #eaeceb;
+	border-radius:20px;
 }
 .subnav ul li a{
 	color:white;
 	text-decoration: none;
+	font-size: 20px;
 }
 .subnav ul li:hover{
 	background:rgba(120,40,170,1);
@@ -161,7 +167,7 @@ a:visited{
 	box-shadow: 5px 5px 10px black;
 	width:85vw;
 	height:auto;
-	margin-top:10vh;
+	margin-top:5vh;
 	margin-bottom:10vh;
 	border-radius: 15px;
 }
@@ -169,8 +175,6 @@ a:visited{
 	margin:50px;
 	padding-top:1.5%;
 	padding-bottom:2%;
-	font-size:19px;
-	word-spacing:2px;
 }
 .contents h1,h2,h3{
 	background:linear-gradient(rgba(89, 34, 129, 0.8),rgba(131, 46, 173, 0.5));
