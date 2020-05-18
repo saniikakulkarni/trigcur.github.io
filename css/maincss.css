@@ -34,7 +34,7 @@ header{
 	width:41px;
 }
 .logotext a{
-	font-size:190%;
+	font-size:200%;
 	text-decoration: none;
 	text-align: center;
 	font-family: 'Varela Round', sans-serif;
@@ -169,6 +169,7 @@ a:visited{
 	margin:50px;
 	padding-top:1.5%;
 	padding-bottom:2%;
+	font-size: 120%;
 }
 .contents h1,h2,h3{
 	background:linear-gradient(rgba(89, 34, 129, 0.8),rgba(131, 46, 173, 0.5));
