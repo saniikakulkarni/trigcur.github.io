@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href=".\css\maincss.css">
+	<link rel="shortcut icon" type="image/png" href=".\images\trigcurlogo.svg">
+	<title>TrigCur | Triggers</title>
+</head>
+<body id=top>
+	<header>
+		<ul class=logomain>
+			<li>
+				<div class=logo>
+					<a href="index.html"><img src=".\images\trigcurlogo.svg" alt=""></a>
+				</div>
+				<div class=logotext>
+					<a href="index.html">TrigCur</a>
+				</div>
+			</li>
+		</ul>
+		<ul>
+			<li><a class=active href=triggers.html>Triggers</a></li>
+			<li><a href=cursors.html>Cursors</a></li>
+		</ul>
+	</header>
+	<div class=navpages>
+		<div class="subnav">
+				<ul>
+					<li><a href="#ben">Benefit of Triggers</a></li>
+					<li><a href="#parts">Parts of Triggers</a></li>
+					<li><a href="#types">Types of Triggers</a></li>
+					<li><a href="#work">Working of Triggers</a></li>
+				</ul>
+		</div>
+		<div class=page>
+			<div class=contents>
+				<h1>TRIGGERS</h1>
+				<hr>
+				<br><br>
+					<p>Triggers are stored programs, which are automatically executed or fired when some events occur. Triggers are, in fact, written to be executed in response to any of the following events −</p>
+					<ul>
+						<li>A database manipulation (DML) statement (DELETE, INSERT, or UPDATE)</li>
+						<li>A database definition (DDL) statement (CREATE, ALTER, or DROP).</li>
+						<li>A database operation (SERVERERROR, LOGON, LOGOFF, STARTUP, or SHUTDOWN).</li>
+					</ul>
+					<br>
+					<br>
+					<p>Triggers are automatically and repeatedly called upon by oracle engine on satisfying certain condition.Triggers can be activated or deactivated depending on the requirements.If triggers are activated then they are executed implicitly by oracle engine and if triggers are deactivated then they are executed explicitly by oracle engine.</p><br><br>
+					<h2 id=ben>Benefit of Triggers</h3><hr><br>
+					<ul>
+						<li>Generating some derived column values automatically</li>
+						<li>Enforcing referential integrity</li>
+						<li>Event logging and storing information on table access</li>
+						<li>Auditing</li>
+						<li>Synchronous replication of tables</li>
+						<li>Imposing security authorizations</li>
+						<li>Preventing invalid transactions</li>
+					</ul><br>
+					<h2 id=parts>Parts of Triggers</h3><hr><br>
+					<ul>
+						<li><b>Triggering Event or Statement:</b> The statements due to which a trigger occurs is called triggering event or statement. Such statements can be DDL statements, DML statements or any database operation, executing which gives rise to a trigger.</li>
+						<li><b>Trigger Restriction:</b> The condition or any limitation applied on the trigger is called trigger restriction. Thus, if such a condition is TRUE then trigger occurs otherwise it does not occur.</li>
+						<li><b>Trigger Action:</b> The body containing the executable statements that is to be executed when trigger occurs that is with the execution of Triggering statement and upon evaluation of Trigger restriction as True is called Trigger Action.</li>
+					</ul><br><br>
+					<h2 id=types>Types of Triggers</h3><hr>
+					<br>
+					<ul>
+						<li>Level Triggers</li>
+						<li>Event Triggers</li>
+						<li>Timing Triggers</li>
+					</ul><br><br>
+
+					<h3>Level Triggers</h3><br>
+					<ul>
+						<p><b>ROW LEVEL TRIGGERS</b></p>
+							<li>It fires for every record that got affected with the execution of DML statements like INSERT, UPDATE, DELETE etc.</li>
+
+							<li>It always use a FOR EACH ROW clause in a triggering statement.</li>
+
+						<p><b>STATEMENT TRIGGERS</b></p>
+							<li>It fires once for each statement that is executed.</li>
+					</ul><br>
+
+					<h3>Timing Triggers</h3><br>
+					<ul>
+						<p><b>BEFORE TRIGGERS</b></p>
+							<li>It fires before executing DML statement.</li>
+
+							<li>Triggering statement may or may not executed depending upon the before condition block.</li>
+
+						<p><b>AFTER TRIGGERS</b></p>
+							<li>It fires after executing DML statement.</li>
+					</ul><br><br>
+					<h2 id=work>Working of Triggers</h2><hr><br>
+					<p><b>Syntax for creating triggers</b></p><br>
+					<p class="syntax">CREATE OR REPLACE TRIGGER trigger_name<br>
+									BEFORE/AFTER/INSTEAD OF <br>
+									INSERT/DELETE/UPDATE ON table_name <br>
+									REFERENCING (OLD AS O, NEW AS N) <br>
+									FOR EACH ROW WHEN (test_condition) <br>
+									DECLARE <br>
+									-- Variable declaration;<br>
+									BEGIN <br>
+									-- Executable statements;<br>
+									EXCEPTION <br>
+									-- Error handling statements;<br>
+									END trigger_name;<br>
+									END;</p><br>
+									<p>where,<br>
+									CREATE OR REPLACE TRIGGER is a keyword used to create a trigger and  trigger_nam is user-defined where a trigger can be given a name.<br><br>
+
+									BEFORE/AFTER/INSTEAD OF specify the timing of the trigger's occurance. INSTEAD OF is used when a view is created. <br><br>
+
+									INSERT/UPDATE/DELETE specify the DML. <br><br>
+
+									table_name specify the name of the table on which DML statement is to be applied. <br><br>
+
+									REFERENCING is a keyword used to provide reference to old and new values for DML statements. <br> <br>
+
+									FOR EACH ROW is the clause used to specify row level tigger. <br><br>
+
+									WHEN is a clause used to specify condition to be applied and is only applicable for row-level trigger. <br><br>
+
+									DECLARE, BEGIN, EXCEPTION, END are the different sections of PL/SQL code block containing variable declaration, executable statements, error handling statements and marking end of PL/SQL block respectively where DECLARE and EXCEPTION part are optional.</p><br><br>
+									<p><b>TABLE USED:STUDENT</b></p><br>
+									<img class=student src="./images/studenttable.png" alt=""><br><br>
+									<p><b>Example</b></p><br>
+									<p class="example">CREATE OR REPLACE TRIGGER CheckAge <br>
+														BEFORE <br>
+														INSERT OR UPDATE ON student <br>
+														FOR EACH ROW <br>
+														BEGIN <br>
+															IF :new.Age>30 THEN <br>
+																raise_application_error(-20001, 'Age should not be greater than 30');<br>
+															END IF;<br>
+														END;</p><br><br>
+									<img src="./images/trig1.png" alt=""><br><br>
+									<p>After initializing the trigger CheckAge, whenever we will insert any new values or update the existing values in the above table STUDENT our trigger will check the age before executing INSERT or UPDATE statements and according to the result of triggering restriction or condition it will execute the statement.Let's take a few examples and try to understand this:</p><br><br>
+
+									<p><b>Example 1</b></p><br>
+									<p class="example">INSERT into STUDENT values(16, 'Saina', 32, 'BCOM');</p><br>
+									<img src="./images/trig2.png" alt=""><br>
+								
+									<p><b>Example 2</b></p><br>
+									<p class="example">INSERT into STUDENT values(17, 'Anna', 22, 'BCOM');</p><br>
+									<img src="./images/trig3.png" alt="">
+									<p><b>Example 3</b></p><br>
+									<p class="example">UPDATE STUDENT set age=31 where ROLLNO=12; </p><br>
+									<img src="./images/trig2.png" alt=""><br>
+
+									<p><b>Example 4</b></p><br>
+									<p class="example"> UPDATE STUDENT set age=23 where ROLLNO=12; </p><br>
+									<img src="./images/trig4.png" alt=""><br><br><hr><br>
+									<a class=top href="#top"><b>Back to Top</b></a>
+									<br><br>
+					</div>
+			</div>
+		</div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href=".\css\maincss.css">
+	<link rel="shortcut icon" type="image/png" href=".\images\trigcurlogo.svg">
+	<title>TrigCur | Cursors</title>
+</head>
+<body id=top>
+	<header>
+		<ul class=logomain>
+			<li>
+				<div class=logo>
+					<a href="index.html"><img src=".\images\trigcurlogo.svg" alt=""></a>
+				</div>
+				<div class=logotext>
+					<a href="index.html">TrigCur</a>
+				</div>
+			</li>
+		</ul>
+		<ul>
+			<li><a href=triggers.html>Triggers</a></li>
+			<li><a class=active href=cursors.html>Cursors</a></li>
+		</ul>
+	</header>
+
+	<div class=navpages>
+		<div class="subnav">
+			<ul>
+				<li><a href="#impcur">Implicit Cursors</a></li>
+				<li><a href="#excur">Explicit Cursors</a></li>
+				<li><a href="#forloop">Cursors in for Loop</a></li>
+				<li><a href="#parameter">Parameterised Cursors</a></li>
+			</ul>
+		</div>
+		<div class=page>
+			<div class=contents>
+				<h1>CURSORS</h1>
+				<hr>
+				<br><br>
+
+					<p>	When it comes to databases, a cursor is a control structure that allows traversing over the records in a database. A cursor provides a mechanism to assign a name to a SQL select statement and then it can be used to manipulate the information within that SQL statement.</p>
+					<br>
+					<p>Oracle creates a memory area called <b>Context Area</b>, when a SQL statement is processed.A cursor is a pointer to this Context Area.A cursor contains all the information needed to process the SQL statement like information on select and all the rows.</p>
+					<br>
+					<p>A cursor holds the rows (one or more) returned by a SQL statement. The set of rows the cursor holds is referred to as the <b>Active Set</b>.You can name a cursor so that it could be referred to in a program to fetch and process the rows returned by the SQL statement, one at a time. </p>
+					<br><br>
+
+					<h2>Types of Cursors</h2><hr>
+					<br>
+					<br>
+					<h3 id=impcur>Implicit Cursors</h3>
+					<br>
+					<p>Implicit cursors are automatically created and used every time a Select statement is issued in PL/SQL, when there is no explicitly defined cursor. Programmers cannot control the implicit cursors and the information in it.</p>
+					<br>
+					<p>Whenever any DML operations occur in the database, an implicit cursor is created that holds the rows affected, in that particular operation. These cursors cannot be named and, hence they cannot be controlled or referred from another place of the code.<b>We can refer only to the most recent cursor through the cursor attributes.</b></p><br>
+					<p>Any SQL cursor attribute will be accessed as sql%attribute_name.</p>
+
+					<table>
+						<tr>
+							<th>Cursor atrribute</th>
+							<th>Desciption</th>
+						</tr>
+						<tr>
+							<td class=row1>%FOUND</td>
+							<td class=row2>Returns TRUE if an INSERT, UPDATE, or DELETE statement affected one or more rows or a SELECT INTO statement returned one or more rows. Otherwise, it returns FALSE.</td>
+						</tr>
+						<tr>
+							<td class=row1>%NOTFOUND</td>
+							<td class=row2>The logical opposite of %FOUND. It returns TRUE if an INSERT, UPDATE, or DELETE statement affected no rows, or a SELECT INTO statement returned no rows. Otherwise, it returns FALSE.</td>
+						</tr>
+						<tr>
+							<td class=row1>%ISOPEN</td>
+							<td class=row2>Always returns FALSE for implicit cursors, because Oracle closes the SQL cursor automatically after executing its associated SQL statement.</td>
+						</tr>
+						<tr>
+							<td class=row1>%ROWCOUNT</td>
+							<td class=row2>Returns the number of rows affected by an INSERT, UPDATE, or DELETE statement, or returned by a SELECT INTO statement.</td>
+						</tr>
+					</table>
+					<br>
+					<br>
+					<p><b>Example</b></p><br>
+					<p><b>TABLE USED:CUSTOMERS</b></p><br>
+					<img src="./images/maintablecur.png">
+					<br><br>
+					<p class="example">DECLARE <br>
+									   total_rows number(2);<br> 
+									BEGIN <br>
+									   UPDATE customers <br>
+									   SET salary = salary + 500; <br>
+									   IF sql%notfound THEN <br>
+									      dbms_output.put_line('no customers selected'); <br>
+									   ELSIF sql%found THEN <br>
+									      total_rows := sql%rowcount;<br>
+									      dbms_output.put_line( total_rows || ' customers selected '); <br>
+									   END IF;  <br>
+									END; <br>
+									/  <br>    
+					</p><br><br>
+					<img src="./images/implicit.png" alt=""><br><br>
+					<p>If you check the records in customers table, you will find that the rows have been updated −</p><br>
+					<img src="./images/implicit2.png" alt=""><br><br>
+
+					<h3 id=excur>Explicit Cursor</h3>
+					<br>
+					<p>Explicit cursors are defined explicitly by the developer. In PL/SQL an explicit cursor is actually a named query defined using the key word cursor. It is created on a SELECT Statement which returns more than one row.</p>
+					<br>
+					<br>
+
+					<ul >Working with an explicit cursor includes the following steps −
+						<li><b>Declaring the cursor for initializing the memory</b></li>
+							<p>Declaring the cursor defines the cursor with a name and the associated SELECT statement.</p><br>
+							<p><b>Syntax</b></p><br>
+							<p class=syntax>CURSOR cursor_name IS select_statement;</p><br>
+							<p><b>Example</b></p><br>
+							<p class="example">CURSOR c_customers IS SELECT id, name, address FROM customers;</p><br>
+						<li><b>Opening the cursor for allocating the memory</b></li>
+							<p>Opening the cursor allocates the memory for the cursor and makes it ready for fetching the rows returned by the SQL statement into it.</p><br>
+							<p><b>Syntax</b></p><br>
+							<p class="syntax">OPEN cursor_name;</p><br><br>
+							<p><b>Example</b></p><br>
+							<p class="example">OPEN c_customers; </p><br>
+						<li><b>Fetching the cursor for retrieving the data</b></li>
+							<p>Fetching the cursor involves accessing one row at a time.</p><br>
+							<p><b>Syntax</b></p><br>
+							<p class="syntax">FETCH cursor_name INTO variable_names;</p><br><br>
+							<p><b>Example</b></p><br>
+							<p class="example">FETCH c_customers INTO c_id, c_name, c_addr; </p><br>
+						<li><b>Closing the cursor to release the allocated memory</b></li>
+							<p>Closing the cursor means releasing the allocated memory.</p><br>
+							<p><b>Syntax</b></p><br>
+							<p class="syntax">CLOSE cursor_name;</p><br><br>
+							<p><b>Example</b></p><br>
+							<p class="example">CLOSE c_customers;</p><br>
+					</ul>
+					<br><br>
+					<p><b>TABLE USED:STUDENT</b></p>
+					<img class=student src="./images/studenttable.png" alt=""><br>
+					<p><b>Example<b></p><br><br>
+					<p class="example">DECLARE <br>
+										CURSOR student_cursor IS SELECT sname FROM Student ;<br>
+										snm Student.sname %type;<br>
+									BEGIN <br>
+										OPEN student_cursor;<br>
+										IF student_cursor%ISOPEN FALSE then <br>
+											dbms_output.put_line('Cannot open cursor');<br>
+										ELSE <br>
+											LOOP <br>
+												FETCH student_cursor INTO snm;<br>
+												IF student_cursor%NOTFOUND then <br>
+													Exit;<br>
+												END IF;<br>
+												dbms_ output.put_line('' ||snm);<br>
+											END LOOP;<br>
+											dbms_output.put_line('Total Records: ' ||student_cursor%rowcount);<br>
+										CLOSE student_cursor;<br>
+									END;</p><br>
+					<img src="./images/explicit.png" alt=""><br><br>
+
+					<h2 id=forloop>Cursors in For Loop</h3><hr>
+					<br>
+					<p>A Cursor FOR LOOP is a loop meant for the cursor which automatically checks for the row count and exits the loop when all the data stored in the cursor is iterated. A cursor FOR loop automatically does the following:</p>
+					<br>
+
+					<ul>
+						<li>Implicitly declares its loop index as a %rowtype record.</li>
+						<li>Opens the cursor.</li>
+						<li>Retrieves the record from the cursor for each iteration.</li>
+						<li>Closes the cursor after processing all the records.</li>
+						<li>A cursor can also be closed by using EXIT or GOTO statements.</li>
+					</ul>
+					<br>
+
+					<p><b>Syntax</b></p><br>
+					<p class="syntax">FOR variable_name IN cursor_name LOOP <br>
+					-- Executable statements<br>
+					END LOOP;</p><br>
+
+					<p><b>Example</b></p><br>
+					
+					<p class=example>DECLARE<br>
+					CURSOR student_cursor IS SELECT sname FROM Student;<br>
+					BEGIN<br>
+					FOR sname IN student_cursor LOOP<br>
+					dbms_output.put_line('' || snm);<br>
+					END LOOP;<br>
+					END;</p>
+					<br>
+					<img src="./images/forloop.png" alt=""><br><br>
+
+					<h2 id="parameter">Parameterised Cursors</h2><hr><br>
+					<p>A parameterized cursor is a cursor with arguments and it allows us to create dynamic SQL queries with conditions containing the variables.</p><br>
+					<p><b>Syntax</b></p><br>
+					<p class="syntax">CURSOR cursor_name (variable_name Datatype) IS SELECT statement...;</p><br>
+					<p><b>After declaring a parameterized cursor, when we open it we have to provide the value to be used in the parameterized cursor, like this:</b></p><br>
+					<p class="syntax">OPEN cursor_name(value/variable/expression);</p><br>
+					<p><b>Example</b></p><br>
+					<p class="example">set serveroutput on;<br>
+										DECLARE
+										CURSOR showRec(sno student.rollno%type) IS SELECT sname, course FROM student WHERE rollno=sno;
+										a  student.sname%type;<br>
+										b  student.course%type;<br>
+										c  student.rollno%type;<br>
+									BEGIN <br>
+									    d := &rollno; <br>
+										OPEN showRec(d);<br>
+											IF showRec%Isopen = FALSE then <br>
+												dbms_output.put_line('Cannot open Cursor');<br>
+											ELSE <br>
+												LOOP <br>
+													FETCH showRec into a,b;<br>
+													EXIT WHEN showRec%NOTFOUND;<br>
+													dbms_output.put_line(a|| '' ||b);<br>
+												END LOOP;<br>
+											End IF;<br>
+										CLOSE showRec;<br>
+									END;</p><br><br>
+					<img src="./images/parcursor.png" alt=""><br><br><hr><br>
+					<a class=top href="#top"><b>Back to Top</b></a>
+					<br><br>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
